@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from fastapi import FastAPI, Request, Form, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -13,7 +14,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Warranty Ghost")
 
-templates = Jinja2Templates(directory="templates")
+# Build an absolute path to the templates directory
+BASE_DIR = Path(__file__).resolve().parent
+templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
 
 # Dependency to get DB session
 def get_db():
@@ -68,7 +71,3 @@ async def inbound_email_hook(
     db.refresh(receipt)
     
     return {"status": "success", "receipt_id": receipt.id}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "warranty_ghost/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "warranty_ghost/main.py"
+    }
+  ]
+}
